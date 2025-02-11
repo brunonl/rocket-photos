@@ -1,11 +1,5 @@
 import { Button, Modal } from 'react-bootstrap'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
-
-const fieldsValidationSchema = yup.object().shape({
-	title: yup.string(),
-})
 
 interface FormValues {
 	title: string
@@ -24,9 +18,7 @@ export default function ModalEditPhoto({
 	handleClose,
 	handleOnEdit,
 }: DynamicModalProps) {
-	const { register, handleSubmit } = useForm<FormValues>({
-		resolver: yupResolver(fieldsValidationSchema),
-	})
+	const { register, handleSubmit } = useForm<FormValues>()
 
 	async function handleEdit(data: FormValues) {
 		const sendData: any = {}

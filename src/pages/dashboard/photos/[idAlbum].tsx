@@ -92,7 +92,7 @@ export default function PhotosComponent({ photos }: PhotoProps) {
 				</Col>
 			</Row>
 			<Row>
-				{photos.length > 0 ? (
+				{photos.length > 0 &&
 					photos.map((item) => (
 						<Col key={item.id} xs={12} sm={6} lg="4" xl={3}>
 							<CardPhotosComponent
@@ -102,10 +102,7 @@ export default function PhotosComponent({ photos }: PhotoProps) {
 								handleEditPhoto={handleShowEditModal}
 							/>
 						</Col>
-					))
-				) : (
-					<p>{emptyMessage}</p>
-				)}
+					))}
 			</Row>
 
 			<DynamicModal
