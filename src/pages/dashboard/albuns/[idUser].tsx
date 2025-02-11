@@ -1,10 +1,13 @@
 import { CardAlbumComponent } from '@/components/CardAlbum'
-import { getAlbumsByUser } from '@/services/albums'
+import { deleteAlbum, getAlbumsByUser } from '@/services/albums'
 import { AlbumsAPIResponseProps } from '@/types/AlbumsAPIResponse'
 import { GetServerSideProps } from 'next'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import DynamicModal from '@/components/DynamicModal'
+import { useState } from 'react'
+import { toast } from 'react-toastify'
 
 interface AlbumsProps {
 	albums: AlbumsAPIResponseProps[]
@@ -12,6 +15,34 @@ interface AlbumsProps {
 
 export default function AlbunsComponent({ albums }: AlbumsProps) {
 	const router = useRouter()
+
+	const [showDeletionModal, setShowDeletionModal] = useState(false)
+	const [currentAlbumID, setCurrentAlbumID] = useState(0)
+
+	const handleCloseDeletionModal = () => setShowDeletionModal(false)
+	const handleShowDeletionModal = (idAlbum: number) => {
+		setCurrentAlbumID(idAlbum)
+		setShowDeletionModal(true)
+	}
+
+	async function handleDeleteAlbum() {
+		await deleteAlbum(null, currentAlbumID).then(
+			() => {
+				handleCloseDeletionModal()
+				toast.success('Album deletado com sucesso', {
+					position: 'top-right',
+					theme: 'colored',
+				})
+			},
+			() => {
+				handleCloseDeletionModal()
+				toast.error('Erro ao deletar album ', {
+					position: 'top-right',
+					theme: 'colored',
+				})
+			},
+		)
+	}
 
 	return (
 		<Container>
@@ -38,10 +69,22 @@ export default function AlbunsComponent({ albums }: AlbumsProps) {
 				{albums.length > 0 &&
 					albums.map((item) => (
 						<Col key={item.id} xs={12} sm={6} lg="4" xl={3}>
-							<CardAlbumComponent idAlbum={item.id} title={item?.title} />
+							<CardAlbumComponent
+								idAlbum={item.id}
+								title={item?.title}
+								handleDeleteAlbum={handleShowDeletionModal}
+							/>
 						</Col>
 					))}
 			</Row>
+
+			<DynamicModal
+				title="Confimarção"
+				description="Realmente deseja excluir o album?"
+				handleClose={handleCloseDeletionModal}
+				handleOnConfirmation={handleDeleteAlbum}
+				show={showDeletionModal}
+			/>
 		</Container>
 	)
 }

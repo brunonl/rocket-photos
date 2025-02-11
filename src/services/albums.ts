@@ -33,10 +33,10 @@ export const createAlbum = async (ctx: any = null, data: any): Promise<any> => {
 
 export const deleteAlbum = async (
 	ctx: any = null,
-	userId: string,
+	userId: number,
 ): Promise<any> => {
 	try {
-		const response = await API.delete(ctx, `/users/${userId}`, {})
+		const response = await API.delete(ctx, `/albums/${userId}`, {})
 		return response
 	} catch (error: any) {
 		return Promise.reject(error)

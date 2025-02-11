@@ -4,11 +4,13 @@ import { Button, Card } from 'react-bootstrap'
 interface CardAlbumComponentProps {
 	idAlbum: number
 	title: string
+	handleDeleteAlbum: Function
 }
 
 export function CardAlbumComponent({
 	idAlbum,
 	title,
+	handleDeleteAlbum,
 }: CardAlbumComponentProps) {
 	const router = useRouter()
 
@@ -23,7 +25,10 @@ export function CardAlbumComponent({
 				<Card.Text className="card__rp__body__description">{title}</Card.Text>
 			</Card.Body>
 			<Card.Footer className="card__rp__footer">
-				<Button onClick={handleNavegationPhotos} variant="primary me-1">
+				<Button
+					onClick={() => handleDeleteAlbum(idAlbum)}
+					variant="primary me-1"
+				>
 					Excluir
 				</Button>
 				<Button onClick={handleNavegationPhotos} variant="primary me-1">

@@ -27,7 +27,7 @@ export const editPhoto = async (
 	}
 }
 
-export const createAlbum = async (ctx: any = null, data: any): Promise<any> => {
+export const createPhoto = async (ctx: any = null, data: any): Promise<any> => {
 	try {
 		const response = await API.post(ctx, '/users', data)
 		return response
